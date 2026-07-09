@@ -12,7 +12,7 @@
     <meta property="og:image" content="https://prashmitmohapatra.github.io/a1d56683-d680-4d6a-82a9-de0e38b390bd.jpeg" />
     <meta property="og:url" content="https://prashmitmohapatra.github.io" />
 
-    <!-- ====== FONTS (Cinzel for Gothic, Inter for Clean UI) ====== -->
+    <!-- ====== FONTS ====== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
@@ -1182,7 +1182,7 @@
             </div>
         </section>
 
-        <!-- LORE / WHISPERS (Using actual book text) -->
+        <!-- LORE / WHISPERS -->
         <section class="section-lore" id="lore">
             <div class="container">
                 <span class="section-label reveal">✦ The City Remembers</span>
@@ -1271,7 +1271,8 @@
             <div class="container">
                 <p>&copy; 2026 Prashmit Mohapatra. All rights reserved.</p>
                 <div class="footer-links">
-                    <a href="mailto:your-email@example.com">✉️ Press & Inquiries</a>
+                    <!-- ✅ EMAIL UPDATED -->
+                    <a href="mailto:prashmit81@gmail.com">✉️ Press & Inquiries</a>
                     <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">↑ Back to top</a>
                 </div>
             </div>
@@ -1334,14 +1335,6 @@
 
             for (let i = 0; i < COUNT; i++) particles.push(new Particle());
 
-            function animateIntro() {
-                ctx.clearRect(0, 0, w, h);
-                for (const p of particles) { p.update();
-                    p.draw(); }
-                requestAnimationFrame(animateIntro);
-            }
-            animateIntro();
-
             // Floating symbols overlay (simple text fragments)
             const symbols = ['⬡', '⟡', '⌾', '⏣', '✦', '⬟'];
             let symParticles = [];
@@ -1357,32 +1350,6 @@
                 });
             }
 
-            function animateSymbols() {
-                ctx.clearRect(0, 0, w, h); // We need to combine with particles, so redraw particles first.
-                // Actually we are in a separate loop? Let's combine.
-
-                // We'll just add to the main loop.
-            }
-            // Re-define the main loop to include symbols
-            const originalAnimate = animateIntro;
-            // Override by pushing to the same loop
-            // Let's just use a single RAF loop.
-            // I'll replace the loop.
-
-            // Cancel the old loop and start a new combined one.
-            // Simpler: just draw symbols on top in the existing loop.
-            // Since I can't easily cancel the requestAnimationFrame without a ref, I'll override.
-            // Actually, let's just keep the original and append drawing.
-            // But we need the canvas clear.
-            // I'll rewrite.
-
-            // Better approach: single combined loop.
-            // Stop the old loop by not calling it.
-            // Let's just define a new combined function and call it.
-
-            // Since the old one is already running, I'll just let it run but
-            // add symbol drawing inside it? No, it's a closure.
-            // I'll cancel it. Since it's assigned to a variable.
             let rafId;
             const originalLoop = () => {
                 ctx.clearRect(0, 0, w, h);
@@ -1400,19 +1367,13 @@
                 }
                 rafId = requestAnimationFrame(originalLoop);
             };
-            // Cancel old if any
-            // Just start the new one.
             rafId = requestAnimationFrame(originalLoop);
-            // Keep a reference to cancel later if needed.
             window._introRaf = rafId;
 
-            // Cleanup on skip
             window.skipIntro = function() {
                 document.getElementById('intro-screen').classList.add('hidden');
                 document.getElementById('main-content').classList.add('visible');
                 if (rafId) cancelAnimationFrame(rafId);
-                // We don't need to clear the canvas, it hides.
-                // Start mist background
                 initMist();
                 initReveals();
                 initCountdown();
@@ -1434,7 +1395,6 @@
                 }
             }, 5500);
 
-            // Expose skip to global
             window.skipIntro = window.skipIntro || function() {};
         })();
 
@@ -1567,9 +1527,6 @@
             });
         }
 
-        // ============================================================
-        // 7. LORE SCROLL MANUAL KICK (Just decorative, no extra JS needed)
-        // ============================================================
         console.log('🗺️ The Map To The Forgotten World — Live.');
         console.log('📖 Written by 12-year-old Prashmit Mohapatra.');
         console.log('🌫️ "The mist remembers everything."');
