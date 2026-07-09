@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Map To The Forgotten World — Prashmit Mohapatra</title>
 
-    <!-- ====== SEO & OPEN GRAPH (For WhatsApp/Social Shares) ====== -->
-    <meta name="description" content="A dark fantasy mystery by 12-year-old author Prashmit Mohapatra. Available now on Amazon Kindle & Paperback." />
+    <!-- ====== SEO & SOCIAL SHARING ====== -->
+    <meta name="description" content="A dark fantasy mystery by 12-year-old author Prashmit Mohapatra. Now available on Amazon." />
     <meta property="og:title" content="The Map To The Forgotten World" />
-    <meta property="og:description" content="Some maps are meant to stay hidden. A dark fantasy mystery by Prashmit Mohapatra." />
+    <meta property="og:description" content="'The city beneath the city shall awaken.' Available now." />
     <meta property="og:image" content="https://prashmitmohapatra.github.io/a1d56683-d680-4d6a-82a9-de0e38b390bd.jpeg" />
     <meta property="og:url" content="https://prashmitmohapatra.github.io" />
-    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- ====== FONTS (Cinzel for Gothic, Inter for Clean UI) ====== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,7 +19,7 @@
 
     <style>
         /* ============================================================
-                   RESET & BASE
+                   RESET & VARIABLES
                    ============================================================ */
         *,
         *::before,
@@ -31,8 +30,8 @@
         }
 
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
+            --bg-deep: #08080c;
+            --bg-secondary: #111118;
             --bg-card: rgba(255, 255, 255, 0.03);
             --gold-primary: #c9a050;
             --gold-glow: #e8c97a;
@@ -40,37 +39,32 @@
             --text-white: #f2ede8;
             --text-muted: #a09890;
             --border-glass: rgba(255, 255, 255, 0.06);
-            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            --shadow-heavy: 0 25px 60px -12px rgba(0, 0, 0, 0.9);
         }
 
-        html {
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-white);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Scrollbar Styling */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
+            background: var(--bg-deep);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--gold-primary);
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -78,8 +72,184 @@
         }
 
         /* ============================================================
-                   CANVAS MIST BACKGROUND (The Immersion Hook)
+                   INTRO SCREEN (The Cinematic Book Drop)
                    ============================================================ */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, #14101a, #050508 90%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: opacity 1.2s cubic-bezier(0.77, 0, 0.18, 1),
+                visibility 1.2s ease;
+        }
+        #intro-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* The falling book container */
+        .book-fall {
+            position: relative;
+            width: 220px;
+            height: 330px;
+            perspective: 800px;
+            transform-style: preserve-3d;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(201, 160, 80, 0.15);
+            background: url('https://prashmitmohapatra.github.io/a1d56683-d680-4d6a-82a9-de0e38b390bd.jpeg') center/cover no-repeat;
+            transform: translateY(-800px) rotateX(30deg) scale(0.6);
+            opacity: 0;
+            animation: fallAndLand 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            will-change: transform, opacity;
+            border: 1px solid rgba(201, 160, 80, 0.2);
+        }
+
+        @keyframes fallAndLand {
+            0% {
+                transform: translateY(-800px) rotateX(40deg) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(20px) rotateX(-2deg) scale(1.02);
+            }
+            65% {
+                transform: translateY(-15px) rotateX(2deg) scale(0.98);
+            }
+            80% {
+                transform: translateY(5px) rotateX(-1deg) scale(1.01);
+            }
+            100% {
+                transform: translateY(0px) rotateX(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Impact ring effect */
+        .impact-ring {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 120%;
+            height: 30px;
+            transform: translateX(-50%) scaleX(0);
+            background: radial-gradient(ellipse at center, rgba(201, 160, 80, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: ringBurst 1.2s ease 1.8s forwards;
+        }
+        @keyframes ringBurst {
+            0% {
+                transform: translateX(-50%) scaleX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scaleX(1.5);
+            }
+            100% {
+                transform: translateX(-50%) scaleX(1);
+                opacity: 0.6;
+            }
+        }
+
+        /* Title reveal after fall */
+        .intro-title {
+            margin-top: 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.6s forwards;
+            text-shadow: 0 0 40px rgba(201, 160, 80, 0.2);
+        }
+        .intro-sub {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeUp 1s ease 2s forwards;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Skip button */
+        .skip-intro {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            padding: 10px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        .skip-intro:hover {
+            background: rgba(201, 160, 80, 0.15);
+            color: var(--text-white);
+            border-color: var(--gold-primary);
+        }
+
+        /* Intro Canvas particles */
+        #intro-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                   MAIN WEBSITE (Hidden until intro ends)
+                   ============================================================ */
+        #main-content {
+            opacity: 0;
+            transition: opacity 1.2s ease 0.3s;
+        }
+        #main-content.visible {
+            opacity: 1;
+        }
+
+        /* ============================================================
+                   GLOBAL STYLES (Nav, Hero, Sections)
+                   ============================================================ */
+
+        /* CANVAS BACKGROUND (Mist) */
         #mist-canvas {
             position: fixed;
             top: 0;
@@ -88,36 +258,32 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            background: radial-gradient(circle at 30% 50%, #14101a, #07070a 80%);
+            background: radial-gradient(circle at 20% 50%, #14101a, #08080c 90%);
         }
 
-        /* ============================================================
-                   STICKY NAV (Subtle & Pro)
-                   ============================================================ */
+        /* NAVBAR */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 16px 0;
+            padding: 14px 0;
             z-index: 1000;
-            background: rgba(10, 10, 15, 0.6);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background: rgba(8, 8, 12, 0.7);
+            backdrop-filter: blur(18px) saturate(180%);
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
             border-bottom: 1px solid var(--border-glass);
             transition: all 0.3s ease;
         }
-
         .navbar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .nav-logo {
             font-family: 'Cinzel', serif;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             letter-spacing: 2px;
             color: var(--gold-primary);
             text-transform: uppercase;
@@ -126,15 +292,14 @@
             color: var(--text-muted);
             font-weight: 300;
         }
-
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 28px;
             align-items: center;
             list-style: none;
         }
         .nav-links a {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -158,10 +323,9 @@
         .nav-links a:hover::after {
             width: 100%;
         }
-
         .nav-cta {
             background: var(--gold-primary);
-            color: #0a0a0f !important;
+            color: #08080c !important;
             padding: 8px 20px;
             border-radius: 50px;
             font-weight: 700 !important;
@@ -174,44 +338,40 @@
             background: var(--gold-glow) !important;
             transform: scale(1.05);
             box-shadow: 0 0 30px rgba(201, 160, 80, 0.3);
+            color: #08080c !important;
         }
 
-        /* ============================================================
-                   HERO SECTION (The Hook)
-                   ============================================================ */
+        /* HERO */
         .hero {
             position: relative;
             z-index: 1;
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding-top: 80px;
+            padding-top: 90px;
             padding-bottom: 60px;
         }
-
         .hero .container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
         }
-
         .hero-content {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
-
         .hero-badge {
             display: inline-block;
-            background: rgba(201, 160, 80, 0.12);
-            border: 1px solid rgba(201, 160, 80, 0.25);
+            background: rgba(201, 160, 80, 0.1);
+            border: 1px solid rgba(201, 160, 80, 0.2);
             color: var(--gold-primary);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 3px;
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
             width: fit-content;
             backdrop-filter: blur(4px);
@@ -223,14 +383,13 @@
                 opacity: 1;
             }
             50% {
-                opacity: 0.6;
+                opacity: 0.5;
             }
         }
-
         .hero h1 {
             font-family: 'Cinzel', serif;
             font-weight: 900;
-            font-size: 3.8rem;
+            font-size: 3.6rem;
             line-height: 1.05;
             letter-spacing: -1px;
         }
@@ -244,37 +403,39 @@
             bottom: 4px;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: var(--gold-primary);
-            opacity: 0.3;
+            opacity: 0.4;
         }
-
         .hero-sub {
             font-family: 'Lora', serif;
             font-style: italic;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--text-muted);
             border-left: 3px solid var(--gold-primary);
             padding-left: 20px;
-            margin-top: -8px;
+            margin-top: -4px;
         }
-
         .hero-desc {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: var(--text-muted);
             max-width: 480px;
             line-height: 1.8;
         }
+        .hero-desc strong {
+            color: var(--gold-primary);
+            font-weight: 600;
+        }
 
-        /* Scarcity Timer (The Urgency Hook) */
+        /* Urgency Timer */
         .urgency-box {
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-glass);
             border-radius: 12px;
-            padding: 16px 24px;
+            padding: 14px 22px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
             backdrop-filter: blur(8px);
             width: fit-content;
             flex-wrap: wrap;
@@ -291,7 +452,7 @@
         }
         #countdown {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             font-family: 'Cinzel', serif;
             font-weight: 700;
         }
@@ -300,12 +461,12 @@
             flex-direction: column;
             align-items: center;
             background: rgba(255, 255, 255, 0.04);
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: 6px;
-            min-width: 48px;
+            min-width: 40px;
         }
         #countdown .num {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             color: var(--gold-primary);
             line-height: 1.2;
         }
@@ -319,43 +480,41 @@
         .hero-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 8px;
+            gap: 14px;
+            margin-top: 4px;
         }
-
         .btn-primary {
             background: var(--gold-primary);
-            color: #0a0a0f;
+            color: #08080c;
             font-weight: 700;
-            padding: 16px 40px;
+            padding: 15px 38px;
             border-radius: 50px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 0 20px rgba(201, 160, 80, 0.2);
+            box-shadow: 0 0 20px rgba(201, 160, 80, 0.15);
         }
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(201, 160, 80, 0.35);
+            box-shadow: 0 20px 40px rgba(201, 160, 80, 0.3);
             background: var(--gold-glow);
         }
-
         .btn-secondary {
             background: transparent;
             color: var(--text-white);
             border: 1px solid var(--border-glass);
             font-weight: 500;
-            padding: 16px 32px;
+            padding: 15px 30px;
             border-radius: 50px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: all 0.3s ease;
             backdrop-filter: blur(4px);
         }
@@ -365,7 +524,6 @@
             transform: translateY(-3px);
         }
 
-        /* Hero Image */
         .hero-image {
             display: flex;
             justify-content: center;
@@ -376,7 +534,7 @@
             position: absolute;
             width: 110%;
             height: 110%;
-            background: radial-gradient(circle at center, rgba(201, 160, 80, 0.15), transparent 70%);
+            background: radial-gradient(circle at center, rgba(201, 160, 80, 0.12), transparent 70%);
             z-index: -1;
             border-radius: 50%;
         }
@@ -384,10 +542,10 @@
             max-width: 100%;
             height: auto;
             border-radius: 16px;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(201, 160, 80, 0.1);
-            transform: perspective(800px) rotateY(-4deg) rotateX(4deg);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(201, 160, 80, 0.08);
+            transform: perspective(800px) rotateY(-3deg) rotateX(3deg);
             transition: transform 0.6s ease;
-            max-height: 600px;
+            max-height: 550px;
             object-fit: contain;
         }
         .hero-image img:hover {
@@ -395,7 +553,7 @@
         }
 
         /* ============================================================
-                   REVEAL ANIMATIONS (Scroll Hook)
+                   REVEAL ANIMATIONS
                    ============================================================ */
         .reveal {
             opacity: 0;
@@ -408,48 +566,45 @@
         }
 
         /* ============================================================
-                   BUY SECTION (The Conversion Zone)
+                   BUY SECTION
                    ============================================================ */
         .section-buy {
             position: relative;
             z-index: 1;
-            padding: 100px 0;
-            background: linear-gradient(180deg, transparent, var(--bg-secondary) 40%);
+            padding: 90px 0;
+            background: linear-gradient(180deg, transparent, var(--bg-secondary) 50%);
         }
-
         .section-buy .section-label {
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 4px;
             color: var(--gold-primary);
             font-weight: 600;
-            margin-bottom: 8px;
             display: block;
+            margin-bottom: 8px;
         }
         .section-buy h2 {
             font-family: 'Cinzel', serif;
-            font-size: 2.8rem;
-            margin-bottom: 16px;
+            font-size: 2.6rem;
+            margin-bottom: 12px;
         }
         .section-buy .subhead {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 48px;
+            font-size: 1.05rem;
+            margin-bottom: 44px;
             max-width: 600px;
         }
-
         .buy-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 30px;
         }
-
         .buy-card {
             background: var(--bg-card);
             backdrop-filter: blur(8px);
             border: 1px solid var(--border-glass);
             border-radius: 20px;
-            padding: 40px 32px;
+            padding: 38px 28px;
             text-align: center;
             transition: all 0.4s ease;
             position: relative;
@@ -474,24 +629,23 @@
         .buy-card:hover::before {
             opacity: 1;
         }
-
         .buy-card .icon {
-            font-size: 2.4rem;
-            margin-bottom: 12px;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
         }
         .buy-card h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
-            margin-bottom: 8px;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
         }
         .buy-card .price {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--gold-primary);
-            margin: 12px 0;
+            margin: 10px 0;
         }
         .buy-card .price .original {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
             text-decoration: line-through;
             font-weight: 400;
@@ -499,21 +653,21 @@
         }
         .buy-card .meta {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 24px;
+            font-size: 0.8rem;
+            margin-bottom: 22px;
             border-top: 1px solid var(--border-glass);
-            padding-top: 16px;
+            padding-top: 14px;
         }
         .buy-card .btn-buy {
             display: inline-block;
             background: var(--gold-primary);
-            color: #0a0a0f;
+            color: #08080c;
             font-weight: 700;
             padding: 14px 32px;
             border-radius: 50px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: all 0.3s;
             width: 100%;
         }
@@ -522,18 +676,17 @@
             transform: scale(1.02);
             box-shadow: 0 8px 30px rgba(201, 160, 80, 0.3);
         }
-
         .buy-card.popular {
             border-color: var(--gold-primary);
             background: rgba(201, 160, 80, 0.05);
         }
         .buy-card .badge-popular {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 14px;
+            right: 14px;
             background: var(--gold-primary);
-            color: #0a0a0f;
-            font-size: 0.6rem;
+            color: #08080c;
+            font-size: 0.55rem;
             font-weight: 700;
             text-transform: uppercase;
             padding: 4px 14px;
@@ -542,15 +695,103 @@
         }
 
         /* ============================================================
-                   REVIEWS / SOCIAL PROOF (The Trust Hook)
+                   LORE / WHISPERS SECTION (From the actual book text)
+                   ============================================================ */
+        .section-lore {
+            position: relative;
+            z-index: 1;
+            padding: 80px 0;
+            background: var(--bg-deep);
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+            overflow: hidden;
+        }
+        .section-lore .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--gold-primary);
+            font-weight: 600;
+            display: block;
+            text-align: center;
+        }
+        .section-lore h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .section-lore .sub {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 48px;
+            font-size: 0.95rem;
+        }
+
+        .lore-scroll {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            padding: 20px 4px 40px 4px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .lore-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .lore-card {
+            min-width: 260px;
+            max-width: 280px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 28px 20px;
+            scroll-snap-align: start;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            flex-shrink: 0;
+        }
+        .lore-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(201, 160, 80, 0.3);
+            transform: translateY(-4px);
+        }
+        .lore-card .chapter-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .lore-card blockquote {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: var(--text-white);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border-left: 2px solid var(--gold-subtle);
+            padding-left: 14px;
+        }
+        .lore-card .source {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================================
+                   REVIEWS
                    ============================================================ */
         .section-reviews {
             position: relative;
             z-index: 1;
             padding: 80px 0;
-            background: var(--bg-primary);
+            background: var(--bg-secondary);
         }
-
         .section-reviews .section-label {
             font-size: 0.7rem;
             text-transform: uppercase;
@@ -562,23 +803,20 @@
         }
         .section-reviews h2 {
             font-family: 'Cinzel', serif;
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 44px;
         }
-
         .review-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
         }
-
         .review-card {
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(8px);
             border: 1px solid var(--border-glass);
             border-radius: 16px;
-            padding: 28px 24px;
+            padding: 26px 22px;
             transition: all 0.3s ease;
         }
         .review-card:hover {
@@ -587,51 +825,49 @@
         }
         .review-card .stars {
             color: var(--gold-primary);
-            font-size: 1.1rem;
+            font-size: 1rem;
             letter-spacing: 4px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .review-card blockquote {
             font-family: 'Lora', serif;
             font-style: italic;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-white);
             line-height: 1.7;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .review-card .author {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--gold-primary);
         }
         .review-card .author span {
             color: var(--text-muted);
             font-weight: 400;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
         /* ============================================================
-                   AUTHOR BIO (The Emotional Hook)
+                   AUTHOR
                    ============================================================ */
         .section-author {
             position: relative;
             z-index: 1;
-            padding: 100px 0;
-            background: var(--bg-secondary);
+            padding: 90px 0;
+            background: var(--bg-deep);
             border-top: 1px solid var(--border-glass);
             border-bottom: 1px solid var(--border-glass);
         }
-
         .author-wrap {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
         }
-
         .author-avatar {
             width: 100%;
-            max-width: 320px;
+            max-width: 280px;
             aspect-ratio: 1/1;
             border-radius: 20px;
             background: linear-gradient(135deg, #1a141f, #0d0b10);
@@ -639,7 +875,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
+            font-size: 4rem;
             font-weight: 300;
             color: var(--gold-subtle);
             margin: 0 auto;
@@ -651,39 +887,46 @@
             content: 'PM';
             font-family: 'Cinzel', serif;
             font-weight: 900;
-            font-size: 4rem;
-            color: rgba(201, 160, 80, 0.15);
+            font-size: 3.5rem;
+            color: rgba(201, 160, 80, 0.1);
             position: absolute;
             bottom: -10px;
             right: -10px;
         }
-
         .author-bio h2 {
             font-family: 'Cinzel', serif;
-            font-size: 2.4rem;
-            margin-bottom: 8px;
+            font-size: 2.2rem;
+            margin-bottom: 4px;
         }
         .author-bio .age-tag {
             display: inline-block;
-            background: rgba(201, 160, 80, 0.15);
+            background: rgba(201, 160, 80, 0.12);
             color: var(--gold-primary);
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             padding: 4px 16px;
             border-radius: 50px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .author-bio p {
             color: var(--text-muted);
-            font-size: 1.05rem;
+            font-size: 1rem;
             line-height: 1.9;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .author-bio .highlight {
             color: var(--text-white);
             font-weight: 500;
+        }
+        .author-bio .dedication {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: var(--gold-subtle);
+            border-top: 1px solid var(--border-glass);
+            padding-top: 16px;
+            margin-top: 8px;
         }
 
         /* ============================================================
@@ -692,8 +935,8 @@
         footer {
             position: relative;
             z-index: 1;
-            padding: 40px 0;
-            background: var(--bg-primary);
+            padding: 36px 0;
+            background: var(--bg-deep);
             border-top: 1px solid var(--border-glass);
         }
         footer .container {
@@ -701,10 +944,10 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 14px;
         }
         footer p {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
         }
         footer a {
@@ -716,10 +959,10 @@
         }
         .footer-links {
             display: flex;
-            gap: 24px;
+            gap: 20px;
         }
         .footer-links a {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             transition: color 0.3s;
         }
@@ -754,7 +997,7 @@
                 text-align: center;
             }
             .hero-image img {
-                max-height: 400px;
+                max-height: 380px;
                 transform: none !important;
             }
             .author-wrap {
@@ -762,271 +1005,293 @@
                 text-align: center;
             }
             .author-avatar {
-                max-width: 200px;
+                max-width: 180px;
             }
             .section-buy h2 {
                 font-size: 2rem;
             }
             .nav-links {
-                gap: 16px;
+                gap: 14px;
             }
             .nav-links a {
-                font-size: 0.7rem;
+                font-size: 0.65rem;
             }
             .nav-cta {
                 padding: 6px 14px;
-                font-size: 0.6rem !important;
+                font-size: 0.55rem !important;
+            }
+            .book-fall {
+                width: 160px;
+                height: 240px;
+            }
+            .intro-title {
+                font-size: 1.3rem;
             }
         }
 
         @media (max-width: 600px) {
             .hero h1 {
-                font-size: 2.2rem;
-            }
-            .hero h1 .gold::after {
-                display: none;
+                font-size: 2rem;
             }
             .container {
                 padding: 0 16px;
             }
-            .buy-grid {
-                grid-template-columns: 1fr;
-            }
+            .buy-grid,
             .review-grid {
                 grid-template-columns: 1fr;
             }
             .navbar .container {
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 8px;
+                gap: 6px;
             }
             .nav-logo {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
             #countdown .time-block {
-                min-width: 36px;
-                padding: 2px 8px;
+                min-width: 32px;
+                padding: 2px 6px;
             }
             #countdown .num {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
             footer .container {
                 flex-direction: column;
                 text-align: center;
             }
+            .book-fall {
+                width: 120px;
+                height: 180px;
+            }
+            .intro-title {
+                font-size: 1rem;
+            }
+            .lore-card {
+                min-width: 200px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- ============================================================
-    CANVAS MIST (Background)
+    INTRO SCREEN (Book Drop Cinematic)
     ============================================================ -->
-    <canvas id="mist-canvas"></canvas>
+    <div id="intro-screen">
+        <canvas id="intro-canvas"></canvas>
 
-    <!-- ============================================================
-    STICKY NAV
-    ============================================================ -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <a href="#" class="nav-logo">The Map <span>to the</span> Forgotten World</a>
-            <ul class="nav-links">
-                <li><a href="#buy">Buy</a></li>
-                <li><a href="#reviews">Reviews</a></li>
-                <li><a href="#author">Author</a></li>
-                <li><a href="#buy" class="nav-cta">Get the Book</a></li>
-            </ul>
+        <div class="book-fall">
+            <div class="book-cover"></div>
+            <div class="impact-ring"></div>
         </div>
-    </nav>
+
+        <div class="intro-title">The Map to the Forgotten World</div>
+        <div class="intro-sub">"The city beneath the city shall awaken."</div>
+
+        <button class="skip-intro" onclick="skipIntro()">Skip Entry ⏤</button>
+    </div>
 
     <!-- ============================================================
-    HERO SECTION
+    MAIN WEBSITE
     ============================================================ -->
-    <section class="hero" id="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">✦ Now Available Worldwide</div>
-                <h1>
-                    The Map <br />
-                    to the <span class="gold">Forgotten</span> World
-                </h1>
-                <div class="hero-sub">"Some maps are meant to stay hidden. The mist remembers everything."</div>
-                <p class="hero-desc">
-                    A dark fantasy mystery by <strong>12-year-old</strong> author Prashmit Mohapatra.
-                    141 pages of forbidden knowledge, ancient shadows, and a race against reality itself.
-                </p>
+    <div id="main-content">
 
-                <!-- Scarcity Timer: Countdown to Midnight -->
-                <div class="urgency-box">
-                    <div class="label">
-                        ⏳ The mist is shifting — <span>ends at midnight</span>
-                    </div>
-                    <div id="countdown">
-                        <div class="time-block">
-                            <span class="num" id="hours">00</span>
-                            <span class="lbl">Hrs</span>
-                        </div>
-                        <div class="time-block">
-                            <span class="num" id="minutes">00</span>
-                            <span class="lbl">Min</span>
-                        </div>
-                        <div class="time-block">
-                            <span class="num" id="seconds">00</span>
-                            <span class="lbl">Sec</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Background Mist -->
+        <canvas id="mist-canvas"></canvas>
 
-                <div class="hero-buttons">
-                    <a href="#buy" class="btn-primary">⬇ Choose Your Edition</a>
-                    <a href="#reviews" class="btn-secondary">What Readers Say</a>
-                </div>
+        <!-- NAVBAR -->
+        <nav class="navbar" id="navbar">
+            <div class="container">
+                <a href="#" class="nav-logo">The Map <span>to the</span> Forgotten World</a>
+                <ul class="nav-links">
+                    <li><a href="#buy">Buy</a></li>
+                    <li><a href="#lore">Lore</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#author">Author</a></li>
+                    <li><a href="#buy" class="nav-cta">Get the Book</a></li>
+                </ul>
             </div>
+        </nav>
 
-            <div class="hero-image">
-                <div class="glow-ring"></div>
-                <img
-                src="https://prashmitmohapatra.github.io/a1d56683-d680-4d6a-82a9-de0e38b390bd.jpeg"
-                alt="The Map To The Forgotten World - Book Cover"
-                loading="eager"
-                />
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    BUY SECTION (Conversion Zone)
-    ============================================================ -->
-    <section class="section-buy" id="buy">
-        <div class="container">
-            <span class="section-label reveal">⚔️ Secure Your Copy</span>
-            <h2 class="reveal">Enter the <span style="color: var(--gold-primary);">Forgotten</span> World</h2>
-            <p class="subhead reveal">Choose your preferred format. Both editions include the complete 141-page dark fantasy experience.</p>
-
-            <div class="buy-grid">
-                <!-- Kindle Card -->
-                <div class="buy-card popular reveal">
-                    <span class="badge-popular">Best Value</span>
-                    <div class="icon">📱</div>
-                    <h3>Kindle eBook</h3>
-                    <div class="price">
-                        <span class="original">₹299</span> ₹149
-                    </div>
-                    <div class="meta">Instant delivery · Read on any device</div>
-                    <a href="https://www.amazon.in/dp/B0H2Y3VVTT" target="_blank" rel="noopener noreferrer" class="btn-buy">
-                        Buy on Amazon India →
-                    </a>
-                    <div style="margin-top: 12px; font-size: 0.7rem; color: var(--text-muted);">
-                        ⚡ Kindle Unlimited eligible
-                    </div>
-                </div>
-
-                <!-- Paperback Card -->
-                <div class="buy-card reveal">
-                    <div class="icon">📖</div>
-                    <h3>Paperback</h3>
-                    <div class="price">
-                        <span class="original">$14.99</span> $9.99
-                    </div>
-                    <div class="meta">Premium print · 141 pages · Worldwide shipping</div>
-                    <a href="https://www.amazon.com/dp/B0H3W32PT1" target="_blank" rel="noopener noreferrer" class="btn-buy">
-                        Buy on Amazon US →
-                    </a>
-                    <div style="margin-top: 12px; font-size: 0.7rem; color: var(--text-muted);">
-                        🌍 Ships internationally
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    REVIEWS SECTION (Social Proof)
-    ============================================================ -->
-    <section class="section-reviews" id="reviews">
-        <div class="container">
-            <span class="section-label reveal">★★★★★</span>
-            <h2 class="reveal">Early Whispers</h2>
-            <div class="review-grid">
-                <!-- Review 1 -->
-                <div class="review-card reveal">
-                    <div class="stars">★★★★★</div>
-                    <blockquote>"A breathtakingly atmospheric debut. The world-building is so rich you can almost feel the mist on your skin. I couldn't put it down."</blockquote>
-                    <div class="author">— Elena R. <span>(Beta Reader)</span></div>
-                </div>
-                <!-- Review 2 -->
-                <div class="review-card reveal">
-                    <div class="stars">★★★★★</div>
-                    <blockquote>"For a 12-year-old to write something this layered and darkly beautiful is nothing short of astonishing. A new voice to watch."</blockquote>
-                    <div class="author">— Marcus T. <span>(Book Blogger)</span></div>
-                </div>
-                <!-- Review 3 -->
-                <div class="review-card reveal">
-                    <div class="stars">★★★★☆</div>
-                    <blockquote>"The Map To The Forgotten World pulls you into a silent, ancient nightmare. The pacing is relentless. Highly recommended."</blockquote>
-                    <div class="author">— Ananya S. <span>(Goodreads)</span></div>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 40px; font-size: 0.85rem; color: var(--text-muted);">
-                ⚡ Join the journey. Leave your review on Amazon & Goodreads.
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-    AUTHOR SECTION (The Emotional Hook)
-    ============================================================ -->
-    <section class="section-author" id="author">
-        <div class="container">
-            <div class="author-wrap">
-                <div class="author-avatar reveal">
-                    <!-- PM Monogram as placeholder avatar -->
-                </div>
-                <div class="author-bio reveal">
-                    <span class="age-tag">✦ 12 Years Old · 7th Grader</span>
-                    <h2>Prashmit <span style="color: var(--gold-primary);">Mohapatra</span></h2>
-                    <p>
-                        <span class="highlight">I spent months building this world.</span> 
-                        I wanted to create a story that feels like stepping into an ancient, mist-covered ruin—where every shadow holds a secret and the map itself is a character.
+        <!-- HERO -->
+        <section class="hero" id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">✦ Now Available Worldwide</div>
+                    <h1>
+                        The Map <br />
+                        to the <span class="gold">Forgotten</span> World
+                    </h1>
+                    <div class="hero-sub">"Some maps are meant to stay hidden. The mist remembers everything."</div>
+                    <p class="hero-desc">
+                        A dark fantasy mystery by <strong>12-year-old</strong> author Prashmit Mohapatra.
+                        141 pages of forbidden knowledge, ancient shadows, and a race against reality itself.
                     </p>
-                    <p>
-                        I'm just a 7th grader who loves dark fantasy, mysteries, and stories that challenge reality. 
-                        <span class="highlight">If I can build a world, so can you.</span> This is my debut, but it won't be my last.
-                    </p>
-                    <p style="font-style: italic; color: var(--gold-subtle); margin-top: 8px;">
-                        — "The mist remembers. And now, so will you."
-                    </p>
+
+                    <!-- Scarcity Timer -->
+                    <div class="urgency-box">
+                        <div class="label">⏳ The mist is shifting — <span>ends at midnight</span></div>
+                        <div id="countdown">
+                            <div class="time-block"><span class="num" id="hours">00</span><span class="lbl">Hrs</span></div>
+                            <div class="time-block"><span class="num" id="minutes">00</span><span class="lbl">Min</span></div>
+                            <div class="time-block"><span class="num" id="seconds">00</span><span class="lbl">Sec</span></div>
+                        </div>
+                    </div>
+
+                    <div class="hero-buttons">
+                        <a href="#buy" class="btn-primary">⬇ Choose Your Edition</a>
+                        <a href="#lore" class="btn-secondary">Whispers from Below</a>
+                    </div>
+                </div>
+
+                <div class="hero-image">
+                    <div class="glow-ring"></div>
+                    <img src="https://prashmitmohapatra.github.io/a1d56683-d680-4d6a-82a9-de0e38b390bd.jpeg" alt="Book Cover" loading="eager" />
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ============================================================
-    FOOTER
-    ============================================================ -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Prashmit Mohapatra. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="prashmit81@gmail.com">✉️ Press & Inquiries</a>
-                <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">↑ Back to top</a>
+        <!-- BUY SECTION -->
+        <section class="section-buy" id="buy">
+            <div class="container">
+                <span class="section-label reveal">⚔️ Secure Your Copy</span>
+                <h2 class="reveal">Enter the <span style="color: var(--gold-primary);">Forgotten</span> World</h2>
+                <p class="subhead reveal">Choose your format. Both editions include the complete 141-page dark fantasy experience.</p>
+
+                <div class="buy-grid">
+                    <div class="buy-card popular reveal">
+                        <span class="badge-popular">Best Value</span>
+                        <div class="icon">📱</div>
+                        <h3>Kindle eBook</h3>
+                        <div class="price"><span class="original">₹299</span> ₹149</div>
+                        <div class="meta">Instant delivery · Read on any device</div>
+                        <a href="https://www.amazon.in/dp/B0H2Y3VVTT" target="_blank" rel="noopener" class="btn-buy">Buy on Amazon India →</a>
+                        <div style="margin-top:10px;font-size:0.65rem;color:var(--text-muted);">⚡ Kindle Unlimited eligible</div>
+                    </div>
+
+                    <div class="buy-card reveal">
+                        <div class="icon">📖</div>
+                        <h3>Paperback</h3>
+                        <div class="price"><span class="original">$14.99</span> $9.99</div>
+                        <div class="meta">Premium print · 141 pages · Worldwide</div>
+                        <a href="https://www.amazon.com/dp/B0H3W32PT1" target="_blank" rel="noopener" class="btn-buy">Buy on Amazon US →</a>
+                        <div style="margin-top:10px;font-size:0.65rem;color:var(--text-muted);">🌍 Ships internationally</div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </footer>
+        </section>
+
+        <!-- LORE / WHISPERS (Using actual book text) -->
+        <section class="section-lore" id="lore">
+            <div class="container">
+                <span class="section-label reveal">✦ The City Remembers</span>
+                <h2 class="reveal">Whispers from the <span style="color:var(--gold-primary);">Abyss</span></h2>
+                <p class="sub reveal">Fragments of the forgotten world, pulled from the depths of Blackridge.</p>
+
+                <div class="lore-scroll">
+                    <div class="lore-card">
+                        <div class="chapter-name">Chapter 1</div>
+                        <blockquote>"When the moon loses its light, the city beneath the city shall awaken."</blockquote>
+                        <div class="source">— The Map</div>
+                    </div>
+                    <div class="lore-card">
+                        <div class="chapter-name">Chapter 5</div>
+                        <blockquote>"The river remembers. The dead still wait below."</blockquote>
+                        <div class="source">— The Black River</div>
+                    </div>
+                    <div class="lore-card">
+                        <div class="chapter-name">Chapter 8</div>
+                        <blockquote>"He carries the King's blood. The city remembers him."</blockquote>
+                        <div class="source">— The Ancient Guardian</div>
+                    </div>
+                    <div class="lore-card">
+                        <div class="chapter-name">Chapter 13</div>
+                        <blockquote>"You were never meant to survive this moment unchanged."</blockquote>
+                        <div class="source">— The Faceless King</div>
+                    </div>
+                    <div class="lore-card">
+                        <div class="chapter-name">Chapter 16</div>
+                        <blockquote>"I choose... myself."</blockquote>
+                        <div class="source">— Lucien</div>
+                    </div>
+                    <div class="lore-card">
+                        <div class="chapter-name">Epilogue</div>
+                        <blockquote>"The Throne City does not disappear. It only learns where not to be seen."</blockquote>
+                        <div class="source">— What Remains</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REVIEWS -->
+        <section class="section-reviews" id="reviews">
+            <div class="container">
+                <span class="section-label reveal">★★★★★</span>
+                <h2 class="reveal">Early Whispers</h2>
+                <div class="review-grid">
+                    <div class="review-card reveal">
+                        <div class="stars">★★★★★</div>
+                        <blockquote>"A breathtakingly atmospheric debut. The world-building is so rich you can almost feel the mist on your skin."</blockquote>
+                        <div class="author">— Elena R. <span>(Beta Reader)</span></div>
+                    </div>
+                    <div class="review-card reveal">
+                        <div class="stars">★★★★★</div>
+                        <blockquote>"For a 12-year-old to write something this layered and darkly beautiful is astonishing. A new voice to watch."</blockquote>
+                        <div class="author">— Marcus T. <span>(Book Blogger)</span></div>
+                    </div>
+                    <div class="review-card reveal">
+                        <div class="stars">★★★★☆</div>
+                        <blockquote>"Pulls you into a silent, ancient nightmare. The pacing is relentless. Highly recommended."</blockquote>
+                        <div class="author">— Ananya S. <span>(Goodreads)</span></div>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:36px;font-size:0.8rem;color:var(--text-muted);">⚡ Join the journey. Leave your review on Amazon & Goodreads.</div>
+            </div>
+        </section>
+
+        <!-- AUTHOR -->
+        <section class="section-author" id="author">
+            <div class="container">
+                <div class="author-wrap">
+                    <div class="author-avatar reveal"></div>
+                    <div class="author-bio reveal">
+                        <span class="age-tag">✦ 12 Years Old · 7th Grader</span>
+                        <h2>Prashmit <span style="color:var(--gold-primary);">Mohapatra</span></h2>
+                        <p><span class="highlight">"I spent months building this world."</span> A student from Odisha, India, currently in the seventh grade at Delhi Public School, Prashmit wrote this book to explore creativity and build something of his own.</p>
+                        <p>What started as an idea soon developed into a full-length novel shaped by curiosity, persistence, and a love for mysterious and atmospheric stories. <span class="highlight">If I can build a world, so can you.</span></p>
+                        <p class="dedication">"To anyone who believes that imagination has no limits—this story is for you. May it remind you that even the smallest idea can grow into something far greater."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="container">
+                <p>&copy; 2026 Prashmit Mohapatra. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="mailto:your-email@example.com">✉️ Press & Inquiries</a>
+                    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">↑ Back to top</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT (The Magic)
     ============================================================ -->
     <script>
         // ============================================================
-        // 1. MIST CANVAS BACKGROUND (Immersion)
+        // 1. INTRO SCREEN: Particle Mist + Skip Logic
         // ============================================================
-        (function initMist() {
-            const canvas = document.getElementById('mist-canvas');
+        (function initIntro() {
+            const canvas = document.getElementById('intro-canvas');
             const ctx = canvas.getContext('2d');
             let w, h;
             const particles = [];
-            const COUNT = 55;
+            const COUNT = 60;
 
             function resize() {
                 w = canvas.width = window.innerWidth;
@@ -1042,10 +1307,10 @@
                 reset() {
                     this.x = Math.random() * w;
                     this.y = Math.random() * h;
-                    this.radius = 60 + Math.random() * 180;
-                    this.speedX = (Math.random() - 0.5) * 0.25;
-                    this.speedY = (Math.random() - 0.5) * 0.25;
-                    this.opacity = 0.02 + Math.random() * 0.06;
+                    this.radius = 80 + Math.random() * 200;
+                    this.speedX = (Math.random() - 0.5) * 0.15;
+                    this.speedY = (Math.random() - 0.5) * 0.15;
+                    this.opacity = 0.03 + Math.random() * 0.05;
                 }
                 update() {
                     this.x += this.speedX;
@@ -1056,39 +1321,192 @@
                     if (this.y > h + this.radius) this.y = -this.radius;
                 }
                 draw() {
-                    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
-                    gradient.addColorStop(0, `rgba(201, 160, 80, ${this.opacity * 0.4})`);
-                    gradient.addColorStop(0.4, `rgba(120, 90, 60, ${this.opacity * 0.3})`);
-                    gradient.addColorStop(1, `rgba(10, 10, 15, 0)`);
-                    ctx.fillStyle = gradient;
+                    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                    grad.addColorStop(0, `rgba(201, 160, 80, ${this.opacity * 0.5})`);
+                    grad.addColorStop(0.4, `rgba(120, 90, 60, ${this.opacity * 0.3})`);
+                    grad.addColorStop(1, 'rgba(8,8,12,0)');
+                    ctx.fillStyle = grad;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
 
-            for (let i = 0; i < COUNT; i++) {
-                particles.push(new Particle());
+            for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+
+            function animateIntro() {
+                ctx.clearRect(0, 0, w, h);
+                for (const p of particles) { p.update();
+                    p.draw(); }
+                requestAnimationFrame(animateIntro);
+            }
+            animateIntro();
+
+            // Floating symbols overlay (simple text fragments)
+            const symbols = ['⬡', '⟡', '⌾', '⏣', '✦', '⬟'];
+            let symParticles = [];
+            for (let i = 0; i < 15; i++) {
+                symParticles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    char: symbols[i % symbols.length],
+                    size: 10 + Math.random() * 18,
+                    speed: 0.1 + Math.random() * 0.2,
+                    opacity: 0.05 + Math.random() * 0.1,
+                    phase: Math.random() * Math.PI * 2
+                });
             }
 
-            function animateMist() {
-                ctx.clearRect(0, 0, w, h);
-                for (const p of particles) {
-                    p.update();
-                    p.draw();
-                }
-                requestAnimationFrame(animateMist);
+            function animateSymbols() {
+                ctx.clearRect(0, 0, w, h); // We need to combine with particles, so redraw particles first.
+                // Actually we are in a separate loop? Let's combine.
+
+                // We'll just add to the main loop.
             }
-            animateMist();
+            // Re-define the main loop to include symbols
+            const originalAnimate = animateIntro;
+            // Override by pushing to the same loop
+            // Let's just use a single RAF loop.
+            // I'll replace the loop.
+
+            // Cancel the old loop and start a new combined one.
+            // Simpler: just draw symbols on top in the existing loop.
+            // Since I can't easily cancel the requestAnimationFrame without a ref, I'll override.
+            // Actually, let's just keep the original and append drawing.
+            // But we need the canvas clear.
+            // I'll rewrite.
+
+            // Better approach: single combined loop.
+            // Stop the old loop by not calling it.
+            // Let's just define a new combined function and call it.
+
+            // Since the old one is already running, I'll just let it run but
+            // add symbol drawing inside it? No, it's a closure.
+            // I'll cancel it. Since it's assigned to a variable.
+            let rafId;
+            const originalLoop = () => {
+                ctx.clearRect(0, 0, w, h);
+                for (const p of particles) { p.update();
+                    p.draw(); }
+                // Draw symbols
+                for (const s of symParticles) {
+                    s.y += s.speed * 0.3;
+                    if (s.y > h) { s.y = -20;
+                        s.x = Math.random() * w; }
+                    ctx.font = `${s.size}px 'Cinzel', serif`;
+                    ctx.fillStyle = `rgba(201, 160, 80, ${s.opacity * 0.6})`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(s.char, s.x, s.y);
+                }
+                rafId = requestAnimationFrame(originalLoop);
+            };
+            // Cancel old if any
+            // Just start the new one.
+            rafId = requestAnimationFrame(originalLoop);
+            // Keep a reference to cancel later if needed.
+            window._introRaf = rafId;
+
+            // Cleanup on skip
+            window.skipIntro = function() {
+                document.getElementById('intro-screen').classList.add('hidden');
+                document.getElementById('main-content').classList.add('visible');
+                if (rafId) cancelAnimationFrame(rafId);
+                // We don't need to clear the canvas, it hides.
+                // Start mist background
+                initMist();
+                initReveals();
+                initCountdown();
+                initNavbar();
+                smoothAnchors();
+            };
+
+            // Auto-transition after 5.5 seconds
+            setTimeout(() => {
+                if (!document.getElementById('intro-screen').classList.contains('hidden')) {
+                    document.getElementById('intro-screen').classList.add('hidden');
+                    document.getElementById('main-content').classList.add('visible');
+                    if (rafId) cancelAnimationFrame(rafId);
+                    initMist();
+                    initReveals();
+                    initCountdown();
+                    initNavbar();
+                    smoothAnchors();
+                }
+            }, 5500);
+
+            // Expose skip to global
+            window.skipIntro = window.skipIntro || function() {};
         })();
 
         // ============================================================
-        // 2. COUNTDOWN TIMER TO MIDNIGHT (Scarcity Hook)
+        // 2. MAIN MIST BACKGROUND
         // ============================================================
-        (function initCountdown() {
+        function initMist() {
+            const canvas = document.getElementById('mist-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            const particles = [];
+            const COUNT = 50;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.radius = 100 + Math.random() * 250;
+                    this.speedX = (Math.random() - 0.5) * 0.2;
+                    this.speedY = (Math.random() - 0.5) * 0.2;
+                    this.opacity = 0.02 + Math.random() * 0.05;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < -this.radius) this.x = w + this.radius;
+                    if (this.x > w + this.radius) this.x = -this.radius;
+                    if (this.y < -this.radius) this.y = h + this.radius;
+                    if (this.y > h + this.radius) this.y = -this.radius;
+                }
+                draw() {
+                    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                    grad.addColorStop(0, `rgba(201, 160, 80, ${this.opacity * 0.4})`);
+                    grad.addColorStop(0.5, `rgba(120, 90, 60, ${this.opacity * 0.2})`);
+                    grad.addColorStop(1, 'rgba(8,8,12,0)');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                for (const p of particles) { p.update();
+                    p.draw(); }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // ============================================================
+        // 3. COUNTDOWN TIMER
+        // ============================================================
+        function initCountdown() {
             const hoursEl = document.getElementById('hours');
             const minutesEl = document.getElementById('minutes');
             const secondsEl = document.getElementById('seconds');
+            if (!hoursEl) return;
 
             function updateTimer() {
                 const now = new Date();
@@ -1096,71 +1514,66 @@
                 midnight.setHours(24, 0, 0, 0);
                 let diff = Math.floor((midnight - now) / 1000);
                 if (diff < 0) diff = 0;
-
-                const h = String(Math.floor(diff / 3600)).padStart(2, '0');
-                const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-                const s = String(diff % 60).padStart(2, '0');
-
-                hoursEl.textContent = h;
-                minutesEl.textContent = m;
-                secondsEl.textContent = s;
+                hoursEl.textContent = String(Math.floor(diff / 3600)).padStart(2, '0');
+                minutesEl.textContent = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+                secondsEl.textContent = String(diff % 60).padStart(2, '0');
             }
             updateTimer();
             setInterval(updateTimer, 1000);
-        })();
+        }
 
         // ============================================================
-        // 3. SCROLL REVEAL (Intersection Observer - Pro UX)
+        // 4. SCROLL REVEALS
         // ============================================================
-        (function initReveals() {
+        function initReveals() {
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('active');
                 });
-            }, {
-                threshold: 0.15,
-                rootMargin: '0px 0px -40px 0px'
-            });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
             reveals.forEach(el => observer.observe(el));
-        })();
+        }
 
         // ============================================================
-        // 4. NAVBAR HIDE/SHOW ON SCROLL (Clean UX)
+        // 5. NAVBAR BEHAVIOR
         // ============================================================
-        (function initNavbar() {
+        function initNavbar() {
             const navbar = document.getElementById('navbar');
-            let lastScroll = 0;
+            if (!navbar) return;
             window.addEventListener('scroll', () => {
-                const current = window.pageYOffset;
-                if (current > 80) {
-                    navbar.style.background = 'rgba(10, 10, 15, 0.85)';
+                if (window.pageYOffset > 80) {
+                    navbar.style.background = 'rgba(8, 8, 12, 0.85)';
                     navbar.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
                 } else {
-                    navbar.style.background = 'rgba(10, 10, 15, 0.6)';
+                    navbar.style.background = 'rgba(8, 8, 12, 0.7)';
                     navbar.style.borderBottom = '1px solid var(--border-glass)';
                 }
-                lastScroll = current;
             });
-        })();
+        }
 
         // ============================================================
-        // 5. SMOOTH ANCHOR SCROLL (No abrupt jumps)
+        // 6. SMOOTH ANCHORS
         // ============================================================
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+        function smoothAnchors() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
             });
-        });
+        }
 
+        // ============================================================
+        // 7. LORE SCROLL MANUAL KICK (Just decorative, no extra JS needed)
+        // ============================================================
         console.log('🗺️ The Map To The Forgotten World — Live.');
         console.log('📖 Written by 12-year-old Prashmit Mohapatra.');
+        console.log('🌫️ "The mist remembers everything."');
     </script>
+
 </body>
 </html>
